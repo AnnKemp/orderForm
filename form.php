@@ -9,7 +9,7 @@
           rel="stylesheet"/>
     <style>
     .error{
-        color:red;     
+        color:red;
         }
     footer {
         text-align: center;
@@ -38,8 +38,8 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email" class="form-control"/>
-                
+                <input type="text" id="email" name="email" class="form-control" value="<?php echo $email; ?>" />
+                <span class="error"> <?php echo $emailErr; ?></span>
             </div>
             <div></div>
         </div>
@@ -52,24 +52,24 @@
                     <label for="street">Street:</label>
                     <!-- https://www.w3schools.com/php/php_form_complete.asp -->
                     <input type="text" name="street" id="street" class="form-control" value="<?php echo $street;?>" >
-                    <span class="error">* <?php echo $streetErr; ?></span>
+                    <span class="error"> <?php echo $streetErr; ?></span>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
-                    <input type="text" id="streetnumber" name="streetnumber" class="form-control">
-                     <span class="error">* <?php echo $streetnrErr; ?></span>
+                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="<?php echo $streetnr;?>">
+                     <span class="error"> <?php echo $streetnrErr; ?></span>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="city">City:</label>
-                    <input type="text" id="city" name="city" class="form-control">
-                    <span class="error">* <?php echo $cityErr; ?></span>
+                    <input type="text" id="city" name="city" class="form-control" value="<?php echo $city;?>">
+                    <span class="error"> <?php echo $cityErr; ?></span>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
-                    <input type="text" id="zipcode" name="zipcode" class="form-control">
-                    <span class="error">* <?php echo $zipcodeErr; ?></span>
+                    <input type="text" id="zipcode" name="zipcode" class="form-control" value="<?php echo $zipcode;?>">
+                    <span class="error"> <?php echo $zipcodeErr; ?></span>
                 </div>
             </div>
         </fieldset>
