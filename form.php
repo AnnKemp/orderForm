@@ -14,6 +14,9 @@
     footer {
         text-align: center;
     }
+    .textAbove{
+        margin-left:14%;
+    }
     </style>
         
     <title>Order food & drinks</title>
@@ -74,19 +77,19 @@
             </div>
         </fieldset>
 
-        <fieldset>
+  <fieldset>
             <legend>Products</legend>
-            <?php foreach ($products AS $i => $product): ?>
-                <label>
-                    <input type="checkbox" value="1" name="products[<?php echo $i ?>]"/> <?php echo $product['name'] ?> -
-                    &euro; <?php echo number_format($product['price'], 2) ?></label><br />
-            <?php endforeach; ?>
-        </fieldset>
+                <?php foreach ($products AS $i => $product): ?>
+                   <label>
+                          <input type="checkbox" value="<?php echo number_format($product['price'], 2) ?>" name="products[<?php echo $product['name'] ?>]"/> <?php echo $product['name'] ?> -
+                     &euro; <?php echo number_format($product['price'], 2) ?></label><br />
+                <?php endforeach; ?>
+          </fieldset>
 
         <button type="submit" class="btn btn-primary">Order!</button>
     </form>
  
-    <footer>You already ordered <strong>&euro; <?php echo $_SESSION["total"] ?></strong> in food and drinks.</footer>
+    <footer>You already ordered <strong>&euro; <?php //echo $_SESSION["total"] ?></strong> in food and drinks.</footer>
 </div>
 </body>
 </html>
