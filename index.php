@@ -18,7 +18,7 @@ $emailErr = $streetErr = $streetnrErr = $cityErr = $zipcodeErr = "";
 
 
 //if (!empty($_POST)) { // if submitted  for the adress
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------------------------------------------------------------------------------------------
 
     function test_input(string $data) // trimmen, stripslashes and specialchars
     {
@@ -34,8 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $email=test_input($_POST["email"]);
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) { // deze filter werkt niet waterdicht, beter zelf schrijven maar voorlopig bij gebrek aan tijd
             $email=test_input($_POST["email"]);
+
             // to save the data for a longer term then a session, and to id the user you need the email
            // $_COOKIE["email"]="$email";  // nog eens checken voor de exacte schrijfwijze
+
             // to save the data per session
                $_SESSION["email"]=$email;
         }else{
@@ -74,33 +76,72 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     if (empty($_POST["zipcode"])) {
         $zipcodeErr = "* Zipcode is required";
     } else {
-        $zipcode=test_input($_POST["zipcode"]); // postnummer ophalen
-        if(is_numeric($zipcode)){               // test if number
-            $zipcode=test_input($_POST["zipcode"]); // postnummer ophalen
+        $zipcode = test_input($_POST["zipcode"]); // postnummer ophalen
+        if (is_numeric($zipcode)) {               // test if number
+            $zipcode = test_input($_POST["zipcode"]); // postnummer ophalen
             // to save during one session
-            $_SESSION["zipcode"]=$zipcode;
-        }else{
+            $_SESSION["zipcode"] = $zipcode;
+        } else {
             $zipcodeErr = "* It has to be a number!";
         }
+    }
        var_dump($_POST);
         // get the products out of the array to send them
         if(!empty($_POST['products'])) {
-            $contents=$_POST['products'];
-           // var_dump($contents);
+            $contents = $_POST['products'];
+            // var_dump($contents);
 
-            foreach($contents as $x => $x_value) {
-                echo "Product: ". $x . ", Price: " . $x_value;
+            foreach ($contents as $x => $x_value) {
+                echo "Product: " . $x . ", Price: " . $x_value;
                 echo "<br>";
-                $foodDrink=$x; $price=$x_value;
+                $foodDrink = $x;
+                $price = $x_value;
+               // $_SESSION["zipcode"] = $zipcode; how to set a session with two values? have to search it!
+                // maybe with the array as value? so $contents in a session so you need to do a foreach again to get to the values?
             }
+        }
+//------------------------------------------------------ calculate the delivery time by choosing the mode: normal or express ---------------------------------------------
+            // the delivery choiche
+            $delivery_time=0; // initialise vars
+
+         if(!empty($_POST['delivery'])) { // check of they have chosen a delivery way! if true:
+
+             $delivery=$_POST['delivery'];
+             //echo $delivery;  // for testing the content/data
+
+           if (isset($delivery) && $delivery=="normal"){ // if isset and they have choosen normal delivery
+                // delivery time of 2 hours
+               $time=date("h");
+                // the time + two for the delivery-time
+               $time=$time+2;
+                echo '<p class="textAbove">The delivery time is ' . date("$time:i")."</p>";
+                $delivery_time=date("$time:i");
+           }
+            elseif (isset($delivery) && $delivery=="express"){ // if isset and they have choosen express delivery
+                //a delivery time of 45 minutes
+                $minutes=date("i");
+                $hours=date("H");
+
+                // + 45 min for the delivery-time
+                $minutes=$minutes+45;
+                // if more than 60 minutes, 95 for example -> found bug by testing, this is the solution to the bug
+                if($minutes > 60){
+
+                    $minutes=$minutes-60;
+                    $hours=$hours+1;
+                }
+                echo '<p class="textAbove">The delivery time is ' . date("$hours:$minutes")."</p>";
+
+                 $delivery_time=date("$hours:$minutes");
+
+            } else{
+                 echo "<p>No delivery selected!</p>";
+             }
         }
         // nog checken of effectief alles goed is én verzonden! dan pas die boodschap tonen
         echo '<p class="textAbove">Your order has been send! :)</p>';
-    }
 
-   // date_default_timezone_set("America/New_York");
-//echo "Today is " . date("d-m-Y") . "<br>";  // this works and is for the confirmation page
-//echo "The time is " . date("H:i:s");
+
     
  // om de bestelling te mailen  //https://www.w3schools.com/php/func_mail_mail.asp
 
