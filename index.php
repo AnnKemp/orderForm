@@ -11,10 +11,11 @@ $products =[];
 // define variables and set to empty values
 
 // for the adress
-$email = $street = $streetnr = $city = $zipcode = $consomation = "";
 // for the error messages
+$email = $street = $streetnr = $city = $zipcode = $consumation = "";
+// get post values out of form
 $emailErr = $streetErr = $streetnrErr = $cityErr = $zipcodeErr = "";
-// de postwaarden uit het formulier halen
+
 
 //if (!empty($_POST)) { // if submitted  for the adress
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -82,11 +83,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $zipcodeErr = "* It has to be a number!";
         }
        var_dump($_POST);
-        if (!empty($_POST['products'])) { // kan die met ne for each doorlopen en zo de waarden er uit halen
-            //echo '<H1>'.($response['forms'][0]['name']).'</H1>';  // dat er hier uitkrijgen en dan nog: die waarden checked laten in de html+ doorsturen naar ontvangst file
-            //$order=$consomation[0]['name']=$_POST["products"];
-            //echo $order;
-            //$price=$_POST["name"];
+        // get the products out of the array to send them
+        if(!empty($_POST['products'])) {
+            $contents=$_POST['products'];
+           // var_dump($contents);
+
+            foreach($contents as $x => $x_value) {
+                echo "Product: ". $x . ", Price: " . $x_value;
+                echo "<br>";
+                $foodDrink=$x; $price=$x_value;
+            }
         }
         // nog checken of effectief alles goed is én verzonden! dan pas die boodschap tonen
         echo '<p class="textAbove">Your order has been send! :)</p>';
