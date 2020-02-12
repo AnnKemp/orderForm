@@ -3,17 +3,18 @@ declare(strict_types=1);
 ini_set('display_errors', "1"); // om foutmeldingen te tonen
 session_start();
 
+// initiate variables
 $totalValue = 0;
+$cookie_email="";
+$cookie_total=0;
 $products =[];
-//$_COOKIE["total"]=$totalValue;  // om totaal bestelling in cookies op te slaan ook email en die checken om user te identificieren
-//$_COOKIE["email"]; // bepaalde tijd instellen voor die cookies en die anders maken
 
-// define variables and set to empty values
+// start/setup the cookies for the total amount calculation
+setcookie($cookie_email, $cookie_total, time() + (86400 * 30), "/"); // 86400 = 1 day * 30 is for a month
 
-// for the adress
-// for the error messages
+// initiate variables for the adress
 $email = $street = $streetnr = $city = $zipcode = $consumation = "";
-// get post values out of form
+// initiate variables for the error messages
 $emailErr = $streetErr = $streetnrErr = $cityErr = $zipcodeErr = "";
 
 
@@ -35,6 +36,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) { // deze filter werkt niet waterdicht, beter zelf schrijven maar voorlopig bij gebrek aan tijd
             $email=test_input($_POST["email"]);
 
+            $cookie_email=$email;
+            $cookie_total=$totalValue;
+//$_COOKIE["total"]=$totalValue;  // om totaal bestelling in cookies op te slaan ook email en die checken om user te identificieren
+//$_COOKIE["email"]; // bepaalde tijd instellen voor die cookies en die anders maken
+
             // to save the data for a longer term then a session, and to id the user you need the email
            // $_COOKIE["email"]="$email";  // nog eens checken voor de exacte schrijfwijze
 
@@ -55,9 +61,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------
         $streetnrErr = "* Streetnumber is required";
 
     } else {
-        $streetnr=test_input($_POST["streetnumber"]); // nr ophalen
+        $streetnr=test_input($_POST["streetnumber"]); // get number
         if(is_numeric($streetnr)){                      // test if number
-            $streetnr=test_input($_POST["streetnumber"]); // nr ophalen
+            $streetnr=test_input($_POST["streetnumber"]); // get number
             // to save during one session
              $_SESSION["streetnr"]=$streetnr;
         }else{
@@ -68,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------
     if (empty($_POST["city"])) {
         $cityErr = "* City is required";
     } else {
-        $city=test_input($_POST["city"]); // dorp/gemeente/stad ophalen
+        $city=test_input($_POST["city"]); // get city
         // to save during one session
         $_SESSION["city"]=$city;
     }
@@ -76,16 +82,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------
     if (empty($_POST["zipcode"])) {
         $zipcodeErr = "* Zipcode is required";
     } else {
-        $zipcode = test_input($_POST["zipcode"]); // postnummer ophalen
+        $zipcode = test_input($_POST["zipcode"]); // get zipcode
         if (is_numeric($zipcode)) {               // test if number
-            $zipcode = test_input($_POST["zipcode"]); // postnummer ophalen
+            $zipcode = test_input($_POST["zipcode"]); // get zipcode
             // to save during one session
             $_SESSION["zipcode"] = $zipcode;
         } else {
             $zipcodeErr = "* It has to be a number!";
         }
     }
-       var_dump($_POST);
+         //var_dump($_POST);
         // get the products out of the array to send them
         if(!empty($_POST['products'])) {
             $contents = $_POST['products'];
@@ -135,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------
 
                  $delivery_time=date("$hours:$minutes");
 
-            } else{
+            } else{   // check of they have chosen a delivery way! if false:
                  echo "<p>No delivery selected!</p>";
              }
         }
@@ -143,7 +149,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------
         echo '<p class="textAbove">Your order has been send! :)</p>';
 
 
-    
+ //---------------------------------- to send the mail, not finished yet (have to check the installation) ---------------------------------------------------------------------------------------------------
+
  // om de bestelling te mailen  //https://www.w3schools.com/php/func_mail_mail.asp
 
 //define("COOK", "ann.kemp@scarlet.be"); // constant for resto adress
@@ -154,6 +161,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------
 //"CC: ".$email;
 
 //mail(COOK,$subject,$bestelling,$headers);
+
+    // default showing the food-choice ----------------------------------------------------------------------------------------------------------------------------------------
 }
 $products = [
     ['name' => 'Club Ham', 'price' => 3.20],
@@ -163,13 +172,12 @@ $products = [
     ['name' => 'Club Salmon', 'price' => 5]
 ];
 
-// via de get-waarden de juiste producten selecteren food of drink en dan tonen
+// ------------------------- use get to select and show food or drink values ------------------------------GET!!!------------------------------------------------------------
 if (!empty($_GET)) {
 $foodnr=$_GET['food'];
 
 if($foodnr==1){
-    // om spul te tonen
-      // echo '<H1>'.($response['forms'][0]['name']).'</H1>';
+
 $products = [
     ['name' => 'Club Ham', 'price' => 3.20],
     ['name' => 'Club Cheese', 'price' => 3],
@@ -177,8 +185,7 @@ $products = [
     ['name' => 'Club Chicken', 'price' => 4],
     ['name' => 'Club Salmon', 'price' => 5]
 ];
-//setcookie("food", $products, time() + (86400 * 30), "/");
-    //  echo print_r($_COOKIE["food"]);
+
 }
  if($foodnr==0) {
 
@@ -188,14 +195,9 @@ $products = [
          ['name' => 'Sprite', 'price' => 2],
          ['name' => 'Ice-tea', 'price' => 3],
      ];
-//setcookie("drinks", $products, time() + (86400 * 30), "/");
  }
 }else{
     echo '<p class="textAbove">Please, choose something to eat or drink!</p>';
 }
-// code schrijven om de geselecteerde waarden op te tellen en in de session te steken
-    // to change a session variable, just overwrite it
-//$_SESSION["favcolor"] = "yellow";
-//print_r($_SESSION);
 require 'form.php';
 ?>
