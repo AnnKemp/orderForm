@@ -80,8 +80,8 @@
   <fieldset>
             <legend>Products</legend>
                 <?php foreach ($products AS $i => $product): ?>
-                   <label>
-                          <input type="checkbox" value="<?php echo number_format($product['price'], 2) ?>" name="products[<?php echo $product['name'] ?>]"/> <?php echo $product['name'] ?> -
+                   <label><!-- hier nog den checked verbeteren want ie houdt alleen het laatste item geselecteerd !!!!!!!!!!!! nog aanpassen !!!!!! -->
+                          <input type="checkbox" value="<?php echo number_format($product['price'], 2) ?>" name="products[<?php echo $product['name'] ?>]" <?php if (isset($_POST['products']) && $product['name']==$foodDrink) echo "checked=checked";?>/> <?php echo $product['name'] ?> -
                      &euro; <?php echo number_format($product['price'], 2) ?></label><br />
                 <?php endforeach; ?>
   </fieldset>
