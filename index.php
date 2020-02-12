@@ -92,10 +92,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------
             // var_dump($contents);
 
             foreach ($contents as $x => $x_value) {
-                echo "Product: " . $x . ", Price: " . $x_value;
-                echo "<br>";
+               // echo "Product: " . $x . ", Price: " . $x_value;  // to show/test what's in it
+               // echo "<br>";
                 $foodDrink = $x;
                 $price = $x_value;
+                // nog een session van maken om deze ook naar een andere pagina door te geven waar je de bestellingen toont
                // $_SESSION["zipcode"] = $zipcode; how to set a session with two values? have to search it!
                 // maybe with the array as value? so $contents in a session so you need to do a foreach again to get to the values?
             }
