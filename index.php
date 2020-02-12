@@ -9,7 +9,7 @@ $cookie_email="";
 $cookie_total=0;
 $products =[];
 
-// start/setup the cookies for the total amount calculation
+// start/setup the cookies for the total amount calculation  // dit moet ik nog uittesten
 setcookie($cookie_email, $cookie_total, time() + (86400 * 30), "/"); // 86400 = 1 day * 30 is for a month
 
 // initiate variables for the adress
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------
         $emailErr = "* Email is required";
     } else {
         $email=test_input($_POST["email"]);
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) { // deze filter werkt niet waterdicht, beter zelf schrijven maar voorlopig bij gebrek aan tijd
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) { // deze filter werkt niet waterdicht, beter zelf schrijven maar voorlopig bij gebrek aan tijd . . .
             $email=test_input($_POST["email"]);
 
             $cookie_email=$email;
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------
     if (empty($_POST["street"])) {
         $streetErr = "* Street is required";
     } else {
-        $street=test_input($_POST["street"]);  // straat ophalen
+        $street=test_input($_POST["street"]);  // get street
         $_SESSION["street"]=$street;
     }
     if (empty($_POST["streetnumber"])) {
@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){  // --------start post data ---------
                 // maybe with the array as value? so $contents in a session so you need to do a foreach again to get to the values?
             }
         }
-//------------------------------------------------------ calculate the delivery time by choosing the mode: normal or express ---------------------------------------------
+//------------------------------------------------------ calculate the delivery time after choosing the mode: normal or express ---------------------------------------------
             // the delivery choiche
             $delivery_time=0; // initialise vars
 
