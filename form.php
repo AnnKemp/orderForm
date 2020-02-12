@@ -84,7 +84,16 @@
                           <input type="checkbox" value="<?php echo number_format($product['price'], 2) ?>" name="products[<?php echo $product['name'] ?>]"/> <?php echo $product['name'] ?> -
                      &euro; <?php echo number_format($product['price'], 2) ?></label><br />
                 <?php endforeach; ?>
-          </fieldset>
+  </fieldset>
+        <hr />
+   <fieldset>
+       <legend>Delivery</legend>
+
+        <input type="radio" id="normal" name="delivery" value="normal" <?php if (isset($delivery) && $delivery=="normal") echo "checked=checked";?> >
+        <label for="normal">Normal delivery</label><br>
+        <input type="radio" id="express" name="delivery" value="express" <?php if (isset($delivery) && $delivery=="express") echo "checked";?>>
+        <label for="express">Express delivery</label><br>
+  </fieldset>
 
         <button type="submit" class="btn btn-primary">Order!</button>
     </form>
